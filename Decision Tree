@@ -1,1 +1,36 @@
+import pandas as pd 
+from sklearn.model_selection import train_test_split
+from sklearn.tree import DecisionTreeClassifier
+from sklearn.metrics import accuracy_score,confusion_matrix
+df=pd.read_csv("mobile.csv")
+X=df.drop("price_range",axis=1)
+y=df["price_range"]
+X_train,X_test,y_train,y_test= train_test_split(X,y,test_size=0.2,random_state=120)
+my_model=DecisionTreeClassifier(random_state=0)
+results=my_model.fit(X_train,y_train)
+predictions=results.predict(X_test)
+print("Accuracy is :",accuracy_score(y_test,predictions))
+print("Confusion Matrix is :")
+print(confusion_matrix(y_test,predictions))
+new_pred=results.predict([[842,0,2.2,0,1,0,7,0.6,188,2,2,20,756,2549,9,7,19,0,0,1]])
+if new_pred==0:
+    print("Price Range is Very low:",new_pred)
+elif new_pred==1:
+    print("Price Range is low:",new_pred)
+elif new_pred==2:
+    print("Price Range is High:",new_pred)
+else:
+    print("Price Range is Very High:",new_pred)
 
+
+'''Output:
+Accuracy is : 0.84
+
+Confusion Matrix is :
+[[87 13  0  0]
+ [ 8 80  8  0]
+ [ 0 11 78 10]
+ [ 0  0 14 91]]
+
+Price Range is low: [1]
+'''
